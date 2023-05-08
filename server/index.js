@@ -18,17 +18,41 @@ app.get('/login', (req, res) => {
     res.cookie(stateKey, state);
   
     const scope = 'user-read-private user-read-email';
-  
     const queryParams = querystring.stringify({
       client_id: CLIENT_ID,
       response_type: 'code',
       redirect_uri: REDIRECT_URI,
       state: state,
-      scope: scope,
+      scope: scope
     });
-  
+
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    
     res.redirect(`https://accounts.spotify.com/authorize?${queryParams}`);
 });
+
+app.get('/user', (req, res) => {
+    var token=req.headers.token;
+    var myHeaders = new Headers();
+    var bearerToken="Bearer "+token;
+    console.log(bearerToken);
+    myHeaders.append("Authorization", bearerToken);
+    
+    var requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
+      redirect: 'follow'
+    };
+    
+    fetch("https://api.spotify.com/v1/me", requestOptions)
+      .then(response => response.text())
+      .then(result => {
+        res.send(result);
+      })
+      .catch(error => console.log('error', error));
+
+});
+
 app.get('/callback', (req, res) => {
     const code = req.query.code || null;
   
@@ -42,14 +66,16 @@ app.get('/callback', (req, res) => {
       }),
       headers: {
         'content-type': 'application/x-www-form-urlencoded',
-        Authorization: `Basic ${new Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString('base64')}`,
+        Authorization: `Basic ${new Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString('base64')}`
       },
     })
       .then(response => {
-        if (response.status === 200) {
-          res.send(JSON.stringify(response.data));
+        if (response.status === 200) { 
+            const access_token = response.data.access_token;
+            const redirectUrl = `http://localhost:3000/user?access_token=${access_token}`;
+            res.redirect(redirectUrl);
         } else {
-          res.send(response);
+            res.send(response);
         }
       })
       .catch(error => {
