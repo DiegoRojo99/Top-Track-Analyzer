@@ -5,9 +5,14 @@ function UserPage() {
 
   useEffect(() => {
     async function fetchUserData() {
-        const params = new URLSearchParams(window.location.search);
-        const accessToken = params.get('access_token');
-        localStorage.setItem("access_token",accessToken);
+        var at=localStorage.getItem("access_token");
+        if(at!==undefined && at!==null){
+          var accessToken=at;
+        }else{          
+          const params = new URLSearchParams(window.location.search);
+          const accessToken = params.get('access_token');
+          localStorage.setItem("access_token",accessToken);
+        }
 
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "text/plain");
@@ -28,11 +33,11 @@ function UserPage() {
   }, []);
 
   if (!userData) {
-    return <div>Loading...</div>;
+    return <div id='user-data-div'>Loading...</div>;
   }
 
   return (
-    <div>
+    <div id='user-data-div'>
       <h1>User Data</h1>
       <p>Name: {userData.display_name}</p>
       <p>Email: {userData.email}</p>

@@ -1,5 +1,10 @@
 .App {
   text-align: center;
+  background-color: #f2f2f2;
+  height: 100%;
+}
+html,body, #root{
+  height: 100%;
 }
 
 .App-header {
@@ -7,7 +12,6 @@
   min-height: 10vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
@@ -24,4 +28,44 @@
   to {
     transform: rotate(360deg);
   }
+}
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+nav li {
+  margin-right: 10px;
+}
+
+nav li:last-child {
+  margin-right: 0;
+}
+a{
+  color: white;
+  text-decoration: none;
+}
+.spotify-image{
+  width: 82px;
+}
+
+#spotify-button {
+  margin-right: 64px;
+  background-color: #20d45f;
+  color: white;
+  border: none;
+  border-radius: 64px;
+  cursor: pointer;
+}
+.song{
+  border: 1px solid black;
 }

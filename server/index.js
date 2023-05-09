@@ -35,7 +35,6 @@ app.get('/user', (req, res) => {
     var token=req.headers.token;
     var myHeaders = new Headers();
     var bearerToken="Bearer "+token;
-    console.log(bearerToken);
     myHeaders.append("Authorization", bearerToken);
     
     var requestOptions = {
