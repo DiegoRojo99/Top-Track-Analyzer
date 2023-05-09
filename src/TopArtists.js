@@ -1,41 +1,33 @@
 import React, { useEffect, useState } from 'react';
 
-function ShowTrack(tracker) {
-  var track = tracker.track;
-  var index = tracker.index;
-  var trackImage = track.album.images[0].url;
+function ShowArtist(a, ind) {
 
-  var art = [];
-  if (track.artists !== null && track.artists !== undefined) {
-    track.artists.forEach((artist, index) => {
-      art.push(<p className='song-title' key={index}>{artist.name}&nbsp;&nbsp;</p>);
-    });
-  }
+  var artist = a.artist;
+  var artistImage = artist.images[0].url;
 
   return (
-    <div className="col song" key={index}>
-      {trackImage ? (
+    <div className="col song" key={ind}>
+      {artistImage ? (
         <img
           className="song-icon"
-          src={trackImage}
-          title={track.name}
-          alt={track.name}
+          src={artistImage}
+          title={artist.name}
+          alt={artist.name}
         />
       ) : (
         <div>Loading...</div>
       )}
-      <br/>
-      {art}
     </div>
   );
+
 }
 
-function TopTracks() {
-  const [userTracks, setUserTracks] = useState(null);
+function TopArtists() {
+  const [userArtists, setUserArtists] = useState(null);
   const [results, setResults] = useState([]);
 
   useEffect(() => {
-    async function fetchTracksData() {
+    async function fetchArtistsData() {
         var at=localStorage.getItem("access_token");
         if(at!==undefined && at!==null){
           var accessToken=at;
@@ -56,16 +48,16 @@ function TopTracks() {
         redirect: 'follow'
         };
         
-        const response = await fetch('https://api.spotify.com/v1/me/top/tracks?time_range=short_term&limit=48', requestOptions);
+        const response = await fetch('https://api.spotify.com/v1/me/top/artists?time_range=medium_term&limit=48', requestOptions);
         if(response.status===200){
           const data = await response.json();
-          setUserTracks(data);
+          setUserArtists(data);
           if(data!==null && data.items!==null && data.items!==undefined){
             var rs = [];
             var res = [];
-            {data.items.forEach((track, index) => {
+            {data.items.forEach((artist, index) => {
               rs.push(
-                <ShowTrack track={track}/>
+                <ShowArtist artist={artist} index={index}/>
               )
             })
             }
@@ -85,26 +77,26 @@ function TopTracks() {
           console.log("Not working");
         }
     }
-    fetchTracksData();
+    fetchArtistsData();
   }, []);
 
-  if (!userTracks) {
-    return <div id='top-tracks-div'>Loading...</div>;
+  if (!userArtists) {
+    return <div id='top-artists-div'>Loading...</div>;
   }
 
   function showTopPage(){
     document.getElementById("user-data-div").style.display="none";
-    document.getElementById("top-tracks-div").style.display="block";
-    document.getElementById("top-artists-div").style.display="none";
+    document.getElementById("top-artists-div").style.display="block";
+    document.getElementById("top-tracks-div").style.display="none";
   }
-  document.getElementById("tracks-button").onclick=showTopPage;
+  document.getElementById("artist-button").onclick=showTopPage;
 
   return (
-    <div id='top-tracks-div'>
-      <h1>Top Tracks</h1>
+    <div id='top-artists-div'>
+      <h1>Top Artists</h1>
         {results}
     </div>
   );
 }
 
-export default TopTracks;
+export default TopArtists;

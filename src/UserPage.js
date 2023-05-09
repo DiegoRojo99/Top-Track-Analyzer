@@ -44,6 +44,7 @@ function UserPage() {
   function showUserPage(){
     document.getElementById("user-data-div").style.display="block";
     document.getElementById("top-tracks-div").style.display="none";
+    document.getElementById("top-artists-div").style.display="none";
   }
   document.getElementById("user-button").onclick=showUserPage;
 
