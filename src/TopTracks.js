@@ -1,22 +1,49 @@
 import React, { useEffect, useState } from 'react';
 
-function ShowTrack(track, index){
-  var art=[];
-  if(track.artists!==null && track.artists!==undefined){
-    {track.artists.forEach((artist, index) => {
-      art.push(
-        <span>{artist.name}&nbsp;&nbsp;</span>
-      )
-    })
+
+function ShowTrack(tracker) {
+  const [trackImage, setTrackImage] = useState(null);
+  var accessToken=tracker.accessToken;
+  var track = tracker.track;
+  var index = tracker.index;
+
+  useEffect(() => {
+    async function fetchTrackImage() {
+      const url = `https://api.spotify.com/v1/tracks/${track.id}`;
+      const headers = {
+        Authorization: `Bearer ${accessToken}`
+      };
+
+      const response = await fetch(url, { headers });
+      const data = await response.json();
+      setTrackImage(data.album.images[0].url);
     }
+    fetchTrackImage();
+  }, [track.id, accessToken]);
+
+  var art = [];
+  if (track.artists !== null && track.artists !== undefined) {
+    track.artists.forEach((artist, index) => {
+      art.push(<span className='song-title' key={index}>{artist.name}&nbsp;&nbsp;</span>);
+    });
   }
 
-  return(
-    <div className='col song' key={index}>
-      <p>{track.name}</p>
+  return (
+    <div className="col song" key={index}>
+      {trackImage ? (
+        <img
+          className="song-icon"
+          src={trackImage}
+          title={track.name}
+          alt={track.name}
+        />
+      ) : (
+        <div>Loading...</div>
+      )}
+      <br/>
       {art}
     </div>
-    )
+  );
 }
 
 function TopTracks() {
@@ -55,7 +82,7 @@ function TopTracks() {
             var res = [];
             {data.items.forEach((track, index) => {
               rs.push(
-                ShowTrack(track, index)
+                <ShowTrack track={track}/>
               )
               if((index+1)%5===0){
                 res.push(<div className='row'>{rs}</div>)

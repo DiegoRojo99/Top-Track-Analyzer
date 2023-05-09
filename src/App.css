@@ -69,3 +69,13 @@ a{
 .song{
   border: 1px solid black;
 }
+.song-icon{
+  width: 128px;
+  margin: 12px 0;
+}
+.song-title{
+  margin-bottom: 8px;
+}
+#top-tracks-div{
+  background-color: #f2f2f2;
+}
