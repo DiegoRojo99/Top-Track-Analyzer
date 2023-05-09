@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-
 function ShowTrack(tracker) {
   const [trackImage, setTrackImage] = useState(null);
   var accessToken=tracker.accessToken;
@@ -8,23 +7,13 @@ function ShowTrack(tracker) {
   var index = tracker.index;
 
   useEffect(() => {
-    async function fetchTrackImage() {
-      const url = `https://api.spotify.com/v1/tracks/${track.id}`;
-      const headers = {
-        Authorization: `Bearer ${accessToken}`
-      };
-
-      const response = await fetch(url, { headers });
-      const data = await response.json();
-      setTrackImage(data.album.images[0].url);
-    }
-    fetchTrackImage();
-  }, [track.id, accessToken]);
+      setTrackImage(track.album.images[0].url);
+  }, [accessToken]);
 
   var art = [];
   if (track.artists !== null && track.artists !== undefined) {
     track.artists.forEach((artist, index) => {
-      art.push(<span className='song-title' key={index}>{artist.name}&nbsp;&nbsp;</span>);
+      art.push(<p className='song-title' key={index}>{artist.name}&nbsp;&nbsp;</p>);
     });
   }
 
@@ -72,7 +61,7 @@ function TopTracks() {
         redirect: 'follow'
         };
         
-        const response = await fetch('https://api.spotify.com/v1/me/top/tracks?time_range=short_term', requestOptions);
+        const response = await fetch('https://api.spotify.com/v1/me/top/tracks?time_range=short_term&limit=48', requestOptions);
         if(response!==""){
           const data = await response.json();
           console.log(data.items);
@@ -84,12 +73,9 @@ function TopTracks() {
               rs.push(
                 <ShowTrack track={track}/>
               )
-              if((index+1)%5===0){
-                res.push(<div className='row'>{rs}</div>)
-                rs=[];
-              }
             })
             }
+          res.push(<div className='row'>{rs}</div>)
           setResults(res);
           }
         }else{
