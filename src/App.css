@@ -79,3 +79,7 @@ a{
 #top-tracks-div{
   background-color: #f2f2f2;
 }
+
+#user-data-div, #top-tracks-div{
+  display: none;
+}

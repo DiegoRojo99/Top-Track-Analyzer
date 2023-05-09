@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
+
 function UserPage() {
   const [userData, setUserData] = useState(null);
 
@@ -26,8 +27,12 @@ function UserPage() {
         };
         
         const response = await fetch('http://localhost:8888/user', requestOptions);
-        const data = await response.json();
-        setUserData(data);
+        if(response!=="User not found"){
+          const data = await response.json();
+          setUserData(data);
+        }else{
+          window.alert("User is not logged in");
+        }
     }
     fetchUserData();
   }, []);
@@ -35,6 +40,12 @@ function UserPage() {
   if (!userData) {
     return <div id='user-data-div'>Loading...</div>;
   }
+
+  function showUserPage(){
+    document.getElementById("user-data-div").style.display="block";
+    document.getElementById("top-tracks-div").style.display="none";
+  }
+  document.getElementById("user-button").onclick=showUserPage;
 
   return (
     <div id='user-data-div'>

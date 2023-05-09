@@ -1,14 +1,9 @@
 import React, { useEffect, useState } from 'react';
 
 function ShowTrack(tracker) {
-  const [trackImage, setTrackImage] = useState(null);
-  var accessToken=tracker.accessToken;
   var track = tracker.track;
   var index = tracker.index;
-
-  useEffect(() => {
-      setTrackImage(track.album.images[0].url);
-  }, [accessToken]);
+  var trackImage = track.album.images[0].url;
 
   var art = [];
   if (track.artists !== null && track.artists !== undefined) {
@@ -40,7 +35,7 @@ function TopTracks() {
   const [results, setResults] = useState([]);
 
   useEffect(() => {
-    async function fetchUserData() {
+    async function fetchTracksData() {
         var at=localStorage.getItem("access_token");
         if(at!==undefined && at!==null){
           var accessToken=at;
@@ -62,9 +57,8 @@ function TopTracks() {
         };
         
         const response = await fetch('https://api.spotify.com/v1/me/top/tracks?time_range=short_term&limit=48', requestOptions);
-        if(response!==""){
+        if(response.status===200){
           const data = await response.json();
-          console.log(data.items);
           setUserTracks(data);
           if(data!==null && data.items!==null && data.items!==undefined){
             var rs = [];
@@ -79,16 +73,30 @@ function TopTracks() {
           setResults(res);
           }
         }else{
-          console.log("Not Working");
-          console.log(response);
+          if(response.status===403){
+            window.alert("OAuth is not valid");
+          }else if(response.status===401){
+            window.alert("User is not authorized");
+          }else if(response.status===429){
+            window.alert("Rate limit passed");
+          }else{
+            window.alert("Unexpected error");
+          }
+          console.log("Not working");
         }
     }
-    fetchUserData();
+    fetchTracksData();
   }, []);
 
   if (!userTracks) {
     return <div id='top-tracks-div'>Loading...</div>;
   }
+
+  function showTopPage(){
+    document.getElementById("user-data-div").style.display="none";
+    document.getElementById("top-tracks-div").style.display="block";
+  }
+  document.getElementById("top-button").onclick=showTopPage;
 
   return (
     <div id='top-tracks-div'>

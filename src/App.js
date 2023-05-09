@@ -8,11 +8,8 @@ function App() {
       <header className="App-header">
         <div className="container">
           <h2>Top Track Analyzer</h2>
-          <nav>
-            <ul>
-              <li><a href="http://localhost:8888/user">User Page</a></li>
-            </ul>
-          </nav>
+          <button id="user-button">User Page</button>
+          <button id="top-button">Top Tracker</button>
           <button id="spotify-button"><a href='http://localhost:8888/login'><img src='../spotify.png' className='spotify-image' alt='Spotify'/></a></button>
         </div>
       </header>
