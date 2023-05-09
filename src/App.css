@@ -8,7 +8,8 @@ html,body, #root{
 }
 
 .App-header {
-  background-color: #282c34;
+  background: rgb(4,120,15);
+  background: linear-gradient(90deg, rgba(4,120,15,1) 0%, rgba(9,121,28,1) 35%, rgba(2,161,4,1) 100%);
   min-height: 10vh;
   display: flex;
   flex-direction: column;
@@ -76,10 +77,15 @@ a{
 .song-title{
   margin-bottom: 8px;
 }
-#top-tracks-div{
-  background-color: #f2f2f2;
-}
 
-#user-data-div, #top-tracks-div{
+#user-data-div, #top-tracks-div, #top-artists-div{
   display: none;
+  height: 100%;
+  background-color: whitesmoke;
+}
+.carousel-item{
+  max-width: 420px;
+}
+.active{
+  margin: 0 40%;
 }

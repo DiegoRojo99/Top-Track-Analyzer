@@ -30,9 +30,11 @@ function ShowTrack(tracker) {
   );
 }
 
-function TopTracks() {
+function TopTracks(limit) {
   const [userTracks, setUserTracks] = useState(null);
   const [results, setResults] = useState([]);
+
+  limit=limit.limit;
 
   useEffect(() => {
     async function fetchTracksData() {
@@ -56,7 +58,7 @@ function TopTracks() {
         redirect: 'follow'
         };
         
-        const response = await fetch('https://api.spotify.com/v1/me/top/tracks?time_range=short_term&limit=48', requestOptions);
+        const response = await fetch('https://api.spotify.com/v1/me/top/tracks?time_range=short_term&limit='+limit, requestOptions);
         if(response.status===200){
           const data = await response.json();
           setUserTracks(data);

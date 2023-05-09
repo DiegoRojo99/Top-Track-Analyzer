@@ -4,6 +4,7 @@ import TopTracks from './TopTracks';
 import TopArtists from './TopArtists';
 
 function App() {
+  var limit=7;
   return (
     <div className="App">
       <header className="App-header">
@@ -16,8 +17,8 @@ function App() {
         </div>
       </header>
       <UserPage />
-      <TopTracks />
-      <TopArtists />
+      <TopTracks limit={limit}/>
+      <TopArtists limit={limit}/>
     </div>
   );
 }
